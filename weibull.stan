@@ -28,7 +28,7 @@ generated quantities{
     if(d[i]==1){
       log_lik[i] = weibull_lpdf(tI[i]|m,eta); 
     }else if(d[i]==2){
-      log_lik[i] = log_diff_exp(weibull_lcdf(tE[i]+tI[i]|m,eta),weibull_lcdf(tE[i]|m,eta));
+      log_lik[i] = log_diff_exp(weibull_lcdf(tE[i]+tI[i]|m,eta),weibull_lcdf(tI[i]|m,eta));
     }else{
       log_lik[i] = weibull_lccdf(tI[i]|m,eta); 
     }

@@ -38,6 +38,7 @@ traceplot(smp_wei)
 summary(smp_wei)$summary
 ex_wei <- rstan::extract(smp_wei)
 
+
 smp_gam <- sampling(mod_gam,dat4stan,seed=1)
 traceplot(smp_gam)
 summary(smp_gam)$summary
@@ -92,6 +93,10 @@ legend("topright",c("non-parametric","Weibull","gamma","log-normal"),lty = c(2:5
        col=c("black","orange2","forestgreen","royalblue"))
 dev.off()
 
+pred_wei <- extract(smp_wei)$pred
+pred_gam <- extract(smp_gam)$pred
+pred_lnorm <- extract(smp_lnorm)$pred
+
 dfpred <- data.frame(dist=rep(factor(dists,levels = dists),each=4000),
                      pred=c(pred_wei,pred_gam,pred_lnorm))
 
@@ -99,3 +104,4 @@ dfpred <- data.frame(dist=rep(factor(dists,levels = dists),each=4000),
 print(xtable(
 t(simplify2array(tapply(dfpred$pred, dfpred$dist, quantile, prob=c(0.025,0.5,0.975))))
 ))
+

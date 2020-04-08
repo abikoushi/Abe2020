@@ -28,7 +28,7 @@ generated quantities{
     if(d[i]==1){
      log_lik[i] = gamma_lpdf(tI[i]|a,b); 
     }else if(d[i]==2){
-      log_lik[i]  = log_diff_exp(gamma_lcdf(tE[i]+tI[i]|a,b),gamma_lcdf(tE[i]|a,b));
+      log_lik[i]  = log_diff_exp(gamma_lcdf(tE[i]+tI[i]|a,b),gamma_lcdf(tI[i]|a,b));
     }else{
      log_lik[i] = gamma_lccdf(tI[i]|a,b); 
     }
