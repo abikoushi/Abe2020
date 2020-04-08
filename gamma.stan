@@ -14,7 +14,7 @@ model{
     if(d[i]==1){
      target += gamma_lpdf(tI[i]|a,b); 
     }else if(d[i]==2){
-      target += log_diff_exp(gamma_lcdf(tE[i]+tI[i]|a,b),gamma_lcdf(tE[i]|a,b));
+      target += log_diff_exp(gamma_lcdf(tE[i]+tI[i]|a,b),gamma_lcdf(tI[i]|a,b));
     }else{
      target += gamma_lccdf(tI[i]|a,b); 
     }

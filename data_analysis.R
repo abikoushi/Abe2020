@@ -17,7 +17,7 @@ mod_gam <- stan_model("gamma.stan")
 mod_lnorm <- stan_model("lognormal.stan")
 
 #Data is available in Backer et al (2020)  
-data_raw <- read_tsv(file = "20-00062_BAKER_SupplementMaterial/BAKER_Supplementary material S1_data.tsv")
+data_raw <- read_tsv(file = "BAKER_Supplementary material S1_data.tsv")
 
 data2 <- data_raw %>%
   mutate(exposure = as.integer(as.Date(exposure_end,format="%m/%d/%Y")-as.Date(exposure_start,format="%m/%d/%Y")),
@@ -33,26 +33,26 @@ dat4stan <- list(
   tI=data2$incubation
 )
 
-smp_wei <- sampling(mod_wei,dat4stan,seed=1)
+smp_wei <- sampling(mod_wei,dat4stan,cores=4,seed=123,iter=10000)
 traceplot(smp_wei)
 summary(smp_wei)$summary
 ex_wei <- rstan::extract(smp_wei)
 
 
-smp_gam <- sampling(mod_gam,dat4stan,seed=1)
+smp_gam <- sampling(mod_gam,dat4stan,cores=4,seed=123,iter=10000)
 traceplot(smp_gam)
 summary(smp_gam)$summary
 ex_gam <- rstan::extract(smp_gam)
 
-smp_lnorm <- sampling(mod_lnorm,dat4stan,seed=1)
+smp_lnorm <- sampling(mod_lnorm,dat4stan,cores=4,seed=123,iter=10000)
 traceplot(smp_lnorm)
 summary(smp_lnorm)$summary
 ex_lnorm <- rstan::extract(smp_lnorm)
 
 
-r_eff_wei <- relative_eff(exp(ex_wei$log_lik),chain_id = rep(1:4, each = 1000))
-r_eff_gam <- relative_eff(exp(ex_gam$log_lik),chain_id = rep(1:4, each = 1000))
-r_eff_lnorm <- relative_eff(exp(ex_lnorm$log_lik),chain_id = rep(1:4, each = 1000))
+r_eff_wei <- relative_eff(exp(ex_wei$log_lik),chain_id = rep(1:4, each = 5000))
+r_eff_gam <- relative_eff(exp(ex_gam$log_lik),chain_id = rep(1:4, each = 5000))
+r_eff_lnorm <- relative_eff(exp(ex_lnorm$log_lik),chain_id = rep(1:4, each = 5000))
 
 loo_wei <- loo(extract_log_lik(smp_wei), r_eff = r_eff_wei)
 loo_gam <- loo(extract_log_lik(smp_gam), r_eff = r_eff_gam)
@@ -97,7 +97,7 @@ pred_wei <- extract(smp_wei)$pred
 pred_gam <- extract(smp_gam)$pred
 pred_lnorm <- extract(smp_lnorm)$pred
 
-dfpred <- data.frame(dist=rep(factor(dists,levels = dists),each=4000),
+dfpred <- data.frame(dist=rep(factor(dists,levels = dists),each=20000),
                      pred=c(pred_wei,pred_gam,pred_lnorm))
 
 #show Table 2

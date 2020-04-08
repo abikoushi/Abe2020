@@ -14,7 +14,7 @@ model{
     if(d[i]==1){
      target += lognormal_lpdf(tI[i]|mu,sigma); 
     }else if(d[i]==2){
-      target += log_diff_exp(lognormal_lcdf(tE[i]+tI[i]|mu,sigma),lognormal_lcdf(tE[i]|mu,sigma));
+      target += log_diff_exp(lognormal_lcdf(tE[i]+tI[i]|mu,sigma),lognormal_lcdf(tI[i]|mu,sigma));
     }else{
      target += lognormal_lccdf(tI[i]|mu,sigma); 
     }

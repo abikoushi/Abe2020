@@ -14,7 +14,7 @@ model{
     if(d[i]==1){
      target += weibull_lpdf(tI[i]|m,eta); 
     }else if(d[i]==2){
-      target += log_diff_exp(weibull_lcdf(tE[i]+tI[i]|m,eta),weibull_lcdf(tE[i]|m,eta));
+      target += log_diff_exp(weibull_lcdf(tE[i]+tI[i]|m,eta),weibull_lcdf(tI[i]|m,eta));
     }else{
      target += weibull_lccdf(tI[i]|m,eta); 
     }
